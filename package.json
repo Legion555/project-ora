@@ -1,0 +1,24 @@
+{
+  "name": "project-ora",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODCUTION=false npm install --prefix client"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
