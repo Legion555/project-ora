@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import {useState, useEffect} from 'react';
 import './App.css';
+import LoginForm from './components/LoginForm';
+import Dashboard from './components/Dashboard';
 
 function App() {
+  //STATE
+  //User data
+  const [userData, setUserData] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  //RENDER
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {!loggedIn &&
+        <LoginForm userData={userData} setUserData={setUserData} setLoggedIn={setLoggedIn} />
+      }
+      {loggedIn &&
+        <Dashboard setLoggedIn={setLoggedIn}/>
+      }
     </div>
   );
 }

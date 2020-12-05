@@ -15,9 +15,9 @@ router.get('/', (req, res) => {
 
 //Get student data by id
 router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    Student.find({_id: id}).then(items => res.json(items));
-    // res.send(suspect);
+  const id = req.params.id;
+  Student.find({ _id: id }).then(items => res.json(items));
+  // res.send(suspect);
 })
 
 //Register new student
@@ -27,7 +27,7 @@ router.post('/register', async (req,res) => {
   // const {error} = registerValidation(req.body);
   // if(error) return res.status(400).send(error.details[0].message);
 
-  //Create new user
+  //Create new student
   const newStudent = new Student({
       name: req.body.name,
       age: req.body.age,
@@ -42,22 +42,18 @@ router.post('/register', async (req,res) => {
 });
 
 
-router.put('/removeTask', (req, res) => {
-    // const filter = { name: 'Jean-Luc Picard' };
-    // const update = { age: 59 };
-    // User.updateOne(filter, { name: 'Will Riker' });
-    User.findByIdAndUpdate(
-        { _id: req.body._id },
-        { taskList: req.body.taskList },
-        function(err, result) {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }
-        }
-      );
-})
+router.delete('/delete/:id', (req, res) => {
+  const id = req.params.id;
+  // Student.findByIdAndDelete({ _id: id }
+  Student.remove({ _id: id },
+  function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  })
+});
 
 
 module.exports = router;

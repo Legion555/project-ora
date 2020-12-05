@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const Class = require('../models/Class');
-const jwt = require('jsonwebtoken');
-const {registerValidation, loginValidation} = require('../validation');
-const bcrypt = require('bcryptjs');
+const verify = require('./verifyToken');
+
 
 //Get all users
-router.get('/', (req, res) => {
+router.get('/', verify, (req, res) => {
     Class.find().then(items => res.json(items));
 })
 
