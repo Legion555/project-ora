@@ -18,7 +18,7 @@ const classSchema = new mongoose.Schema({
         type: String
     },
     students: {
-        type: Number
+        type: Array
     }
 });
 

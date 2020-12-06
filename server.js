@@ -16,7 +16,6 @@ mongoose.connect(process.env.MONGODB_URI,
 
 //Import routes
 const usersRoute = require('./routes/users');
-const studentsRoute = require('./routes/students');
 const classesRoute = require('./routes/classes');
 
 //Middleware
@@ -25,7 +24,6 @@ app.use(cors());
 
 //Route middleware
 app.use('/api/users', usersRoute);
-app.use('/api/students', studentsRoute);
 app.use('/api/classes', classesRoute);
 
 //Client route
