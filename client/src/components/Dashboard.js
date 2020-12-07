@@ -1,6 +1,9 @@
 import {useState} from 'react';
 import axios from 'axios';
 import { FaPowerOff } from 'react-icons/fa';
+import {SiGoogleclassroom} from 'react-icons/si';
+import { RiDashboardFill } from 'react-icons/ri';
+import Circle from '../assets/circle.png';
 
 const Dashboard = (props) => {
     const [classData, setClassData] = useState({});
@@ -11,7 +14,7 @@ const Dashboard = (props) => {
     const [addClassLocalTeacher, setAddClassLocalTeacher] = useState('');
     
     const [studentData, setStudentData] = useState([]);
-    const [view, setView] = useState('');
+    const [view, setView] = useState('default');
     //Add student
     const [studentName, setStudentName] = useState('');
     const [studentAge, setStudentAge] = useState('');
@@ -50,6 +53,7 @@ const Dashboard = (props) => {
         })
     }
 
+    //Classes
     const createClass = (e) => {
         e.preventDefault();
         const payload = {
@@ -61,6 +65,7 @@ const Dashboard = (props) => {
         axios.post('/api/classes/create', payload)
         .then(function (response) {
             console.log('Class added successfully.');
+            readAllClasses();
             setAddClassName(''); setAddClassBook(''); setAddClassLocalTeacher('');
         })
     }
@@ -80,6 +85,18 @@ const Dashboard = (props) => {
             console.error("Error: " + error)
         })
     }
+    const deleteClass = (id) => {
+        axios.delete("/api/classes/delete/" + id)
+        .then((res) => {
+            console.log('Class deleted');
+            readAllClasses();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    //Class
     const getClassData = (id) => {
         const userToken = localStorage.getItem('userToken');
         axios.get('./api/classes/' + id, {
@@ -139,35 +156,51 @@ const Dashboard = (props) => {
         <div className="dashboard">
             <div className="navigation-container">
                 <div className="links">
-                    {/* <a>Profile</a> */}
-                    <a onClick={readAllClasses}>Classes</a>
+                    <img src={Circle} width="60px"></img>
+                    <a onClick={() => setView('default')} className="link"><RiDashboardFill className="icon" /><br/>Dashboard</a>
+                    <a onClick={readAllClasses} className="link"><SiGoogleclassroom className="icon" /><br/>Classes</a>
                 </div>
                 <div className="logout">
                     <a onClick={logout}><FaPowerOff /></a>
                 </div>
             </div>
-            {/* <form className="add-class-container">
-                <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)}></input>
-                <input type="text" value={addClassBook} placeholder="Class book" onChange={(e) => setAddClassBook(e.target.value)}></input>
-                <input type="text" value={addClassLocalTeacher} placeholder="Local teacher" onChange={(e) => setAddClassLocalTeacher(e.target.value)}></input>
-                <button onClick={createClass}>Add class</button>
-            </form> */}
             <div className="content-container">
                 <div className="breadcrumb">
-
+                    {view === 'default' && <p>Dashboard</p>}
+                    {view === 'classes' && <p>Classes</p>}
                 </div>
-                <div className="classes-container">
-                    {view === 'classes' && classes.map(_class => 
-                    <div className="class-card" key={_class._id}>
-                        <h3>{_class.name}</h3>
-                        <p>Book: {_class.book}</p>
-                        <p>Students: {_class.students.length}</p>
-                        <button onClick={(id) => getClassData(_class._id)}>View class</button>
+                {view === 'default' && 
+                <div className="default-container">
+                    <div className="section-card">
+                        <h1>Classes</h1>
+                        <SiGoogleclassroom className="icon"/>
+                        <button onClick={readAllClasses}>View</button>
                     </div>
-                    )}
                 </div>
+                }
+                {view === 'classes' && 
+                <div className="classes-container">
+                    <form className="add-class">
+                        <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)}></input>
+                        <input type="text" value={addClassBook} placeholder="Class book" onChange={(e) => setAddClassBook(e.target.value)}></input>
+                        <input type="text" value={addClassLocalTeacher} placeholder="Local teacher" onChange={(e) => setAddClassLocalTeacher(e.target.value)}></input>
+                        <button onClick={createClass}>Add class</button>
+                    </form>
+                    <div className="class-cards">
+                        {classes.map(_class => 
+                        <div className="class-card" key={_class._id}>
+                            <h3>{_class.name}</h3>
+                            <p>Book: {_class.book}</p>
+                            <p>Students: {_class.students.length}</p>
+                            <button onClick={(id) => getClassData(_class._id)}>View class</button><br/>
+                            <button onClick={(id) => deleteClass(_class._id)}>Delete class</button>
+                        </div>
+                        )}
+                    </div>
+                </div>
+                }
                 {view === 'class' &&
-                <div className="class-dashboard">
+                <div className="class-container">
                     <div className="class-details-container">
                         <h2>{classData.name}</h2>
                         <h2>{classData.book}</h2>
