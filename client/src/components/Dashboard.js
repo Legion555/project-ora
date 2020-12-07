@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import axios from 'axios';
+import { FaPowerOff } from 'react-icons/fa';
 
 const Dashboard = (props) => {
     const [classData, setClassData] = useState({});
@@ -136,16 +137,25 @@ const Dashboard = (props) => {
   
     return (
         <div className="dashboard">
-            <div className="view-selector">
-                <a onClick={readAllClasses}>View classes</a>
+            <div className="navigation-container">
+                <div className="links">
+                    {/* <a>Profile</a> */}
+                    <a onClick={readAllClasses}>Classes</a>
+                </div>
+                <div className="logout">
+                    <a onClick={logout}><FaPowerOff /></a>
+                </div>
             </div>
-            <form className="add-class-container">
+            {/* <form className="add-class-container">
                 <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)}></input>
                 <input type="text" value={addClassBook} placeholder="Class book" onChange={(e) => setAddClassBook(e.target.value)}></input>
                 <input type="text" value={addClassLocalTeacher} placeholder="Local teacher" onChange={(e) => setAddClassLocalTeacher(e.target.value)}></input>
                 <button onClick={createClass}>Add class</button>
-            </form>
+            </form> */}
             <div className="content-container">
+                <div className="breadcrumb">
+
+                </div>
                 <div className="classes-container">
                     {view === 'classes' && classes.map(_class => 
                     <div className="class-card" key={_class._id}>
@@ -179,9 +189,6 @@ const Dashboard = (props) => {
                     </div>
                 </div>
                 }
-            </div>
-            <div className="logout-container">
-                <a onClick={logout}>Logout</a>
             </div>
         </div>
     )
