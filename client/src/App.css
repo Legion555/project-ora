@@ -47,11 +47,17 @@ a {
           box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
-.auth-container .login-container {
+.auth-container .login-container, .auth-container .register-container {
   width: 100%;
 }
 
-.auth-container .login-container input {
+.auth-container .login-container h1, .auth-container .register-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-container .login-container input, .auth-container .register-container input {
   width: 100%;
   height: 25px;
   margin: 15px 0;
@@ -62,7 +68,7 @@ a {
   font-size: 18px;
 }
 
-.auth-container .login-container button {
+.auth-container .login-container button, .auth-container .register-container button {
   background: #52ac62;
   padding: 5px;
   border: none;
@@ -70,13 +76,20 @@ a {
   font-size: 18px;
 }
 
-.auth-container .login-container button:hover {
+.auth-container .login-container button:hover, .auth-container .register-container button:hover {
   background: #282C34;
   color: #52ac62;
 }
 
-.auth-container .register-container {
-  width: 100%;
+.auth-container .login-container .login-link, .auth-container .login-container .register-link, .auth-container .register-container .login-link, .auth-container .register-container .register-link {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #0000b3;
+}
+
+.auth-container .login-container .login-link:hover, .auth-container .login-container .register-link:hover, .auth-container .register-container .login-link:hover, .auth-container .register-container .register-link:hover {
+  cursor: pointer;
 }
 
 .dashboard {
@@ -104,7 +117,7 @@ a {
   text-align: center;
 }
 
-.dashboard .navigation-container .links a {
+.dashboard .navigation-container .links p {
   width: 100%;
   padding: 10px 0;
   display: block;
@@ -112,12 +125,12 @@ a {
   color: #52ac62;
 }
 
-.dashboard .navigation-container .links a:hover {
+.dashboard .navigation-container .links p:hover {
   border-left: 5px solid #52ac62;
   cursor: pointer;
 }
 
-.dashboard .navigation-container .links a .icon {
+.dashboard .navigation-container .links p .icon {
   font-size: 32px;
 }
 
@@ -125,12 +138,12 @@ a {
   padding: 5px;
 }
 
-.dashboard .navigation-container .logout a {
+.dashboard .navigation-container .logout p {
   color: #ff6666;
   font-size: 24px;
 }
 
-.dashboard .navigation-container .logout a:hover {
+.dashboard .navigation-container .logout p:hover {
   color: red;
   cursor: pointer;
 }
@@ -185,10 +198,16 @@ a {
 .dashboard .content-container .default-container .section-card button {
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 18px;
   background: #4c78a8;
   color: #F6F6F6;
+  -webkit-transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+  transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+}
+
+.dashboard .content-container .default-container .section-card button:hover {
+  border-radius: 0;
 }
 
 .dashboard .content-container .classes-container {
@@ -222,6 +241,26 @@ a {
   background: #F6F6F6;
   -webkit-box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
           box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard .content-container .classes-container .class-cards .class-card button {
+  padding: 5px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #4c78a8;
+  color: #F6F6F6;
+  -webkit-transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+  transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+}
+
+.dashboard .content-container .classes-container .class-cards .class-card button:hover {
+  border-radius: 0;
+}
+
+.dashboard .content-container .classes-container .class-cards .class-card .delete-class-button {
+  background: #990000;
 }
 
 .dashboard .content-container .class-container .class-details-container {

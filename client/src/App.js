@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
@@ -16,7 +16,7 @@ function App() {
         <LoginForm userData={userData} setUserData={setUserData} setLoggedIn={setLoggedIn} />
       }
       {loggedIn &&
-        <Dashboard setLoggedIn={setLoggedIn}/>
+        <Dashboard userData={userData} setUserData={setUserData} setLoggedIn={setLoggedIn}/>
       }
     </div>
   );

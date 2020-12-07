@@ -6,15 +6,32 @@ const bcrypt = require('bcryptjs');
 
 //Get all users
 router.get('/', (req, res) => {
-    User.find().then(items => res.json(items));
+    // User.find().then(items => res.json(items));
+    User.findOne( {email: req.query.email},
+        function(err, result) {
+            if (err) {
+              res.send(err);
+            } else {
+              res.send(result);
+            }
+          })
 })
 
 //Get user data by id
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     User.find({_id: id}).then(items => res.json(items));
-    // res.send(suspect);
 })
+// Get user data by email and pass
+// router.get('/readUser', (req, res) => {
+//     User.findOne( {email: 'josh@gmail.com'} )
+//     .then((res) => {
+//         console.log('worked');
+//     })
+//     .catch((error) => {
+//         console.error("Error: " + error)
+//     })
+// })
 
 //Register new user
 router.post('/register', async (req,res) => {
@@ -55,7 +72,7 @@ router.post('/login', async (req,res) => {
     const user = await User.findOne({email: req.body.email});
     if(!user) return res.status(400).send("Email not found.");
 
-    //Valid password
+    //Validate password
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if(!validPass) return res.status(400).send("Invalid password.");
 
