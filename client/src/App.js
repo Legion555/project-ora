@@ -2,23 +2,25 @@ import {useState} from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   //STATE
   //User data
-  const [userData, setUserData] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
 
   //RENDER
   return (
-    <div className="app">
-      {!loggedIn &&
-        <LoginForm userData={userData} setUserData={setUserData} setLoggedIn={setLoggedIn} />
-      }
-      {loggedIn &&
-        <Dashboard userData={userData} setUserData={setUserData} setLoggedIn={setLoggedIn}/>
-      }
-    </div>
+    <UserProvider>
+      <div className="app">
+        {!loggedIn &&
+          <LoginForm setLoggedIn={setLoggedIn} />
+        }
+        {loggedIn &&
+          <Dashboard setLoggedIn={setLoggedIn}/>
+        }
+      </div>
+    </UserProvider>
   );
 }
 

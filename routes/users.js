@@ -50,6 +50,7 @@ router.post('/register', async (req,res) => {
 
     //Create new user
     const newUser = new User({
+        authority: req.body.authority,
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword
@@ -71,6 +72,9 @@ router.post('/login', async (req,res) => {
     //Check if email exists
     const user = await User.findOne({email: req.body.email});
     if(!user) return res.status(400).send("Email not found.");
+
+    //Check if user is authed
+    if (!user.isAuthed) return res.status(400).send("Not approved.");
 
     //Validate password
     const validPass = await bcrypt.compare(req.body.password, user.password);

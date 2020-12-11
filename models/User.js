@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        required: true
-    },
     isAuthed: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
     name: {
         type: String,
@@ -20,6 +17,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    authority: {
+        type: String,
+        required: true,
+        default: 'teacher'
     },
     date: {
         type: Date,

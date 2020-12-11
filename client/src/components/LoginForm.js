@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../context/UserContext';
 
 const LoginForm = (props) => {
+    //UserData
+    // eslint-disable-next-line
+    const [userData, setUserData] = useContext(UserContext);
     //View
     const [view, setView] = useState('login');
     //Login
@@ -34,7 +38,7 @@ const LoginForm = (props) => {
                 })
                 .then(function (response) {
                     const newUserData = response.data;
-                    props.setUserData(newUserData);
+                    setUserData(newUserData);
                     console.log(newUserData);
                 })
                 .catch(function (error) {
@@ -67,7 +71,7 @@ const LoginForm = (props) => {
             })
             .then(function (response) {
                 const newUserData = response.data;
-                props.setUserData(newUserData);
+                setUserData(newUserData);
                 console.log(newUserData);
             })
             .catch(function (error) {
