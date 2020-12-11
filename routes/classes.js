@@ -4,13 +4,13 @@ const verify = require('./verifyToken');
 
 //CLASSES
 //create class
-router.post('/create', async (req,res) => {
+router.post('/create', verify, async (req,res) => {
 
     const newClass = new Class({
         name: req.body.name,
         book: req.body.book,
-        localTeacher: req.body.localTeacher,
-        students: req.body.students
+        localTeacherName: req.body.localTeacherName,
+        localTeacherId: req.body.localTeacherId
     });
     try{
         const savedClass = await newClass.save();
@@ -37,7 +37,7 @@ router.delete('/delete/:id', (req, res) => {
 })
 
 //read single class
-router.get('/:id', (req, res) => {
+router.get('/:id', verify, (req, res) => {
   const id = req.params.id;
   Class.find({_id: id}).then(items => res.json(items));
 })
@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
 
 //STUDENTS
 //create student
-router.put('/createStudent', (req, res) => {
+router.put('/createStudent', verify, (req, res) => {
   Class.findByIdAndUpdate(
     { _id: req.body._id },  
     { students: req.body.students },
@@ -59,7 +59,7 @@ router.put('/createStudent', (req, res) => {
   );
 })
 //delete student
-router.put('/deleteStudent', (req, res) => {
+router.put('/deleteStudent', verify, (req, res) => {
   Class.findByIdAndUpdate(
     { _id: req.body._id },
     { students: req.body.students },

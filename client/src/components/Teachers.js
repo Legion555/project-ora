@@ -15,6 +15,17 @@ const Teachers = (props) => {
             console.log(err);
         })
     }
+    const deleteTeacher = (e, id) => {
+        e.preventDefault();
+        axios.delete("/api/teachers/deleteTeacher/" + id)
+        .then((res) => {
+            console.log(res.data);
+            props.readAllTeachers();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
 
     return (
         <div className="teachers-container">
@@ -24,6 +35,7 @@ const Teachers = (props) => {
                     <h3>{teacher.name}</h3>
                     <p>Auth status: {teacher.isAuthed ? "Authorized" : "Unauthorized"}</p>
                     <button onClick={(e) => authorizeUser(e, teacher._id)}>Authorize</button>
+                    <button onClick={(e) => deleteTeacher(e, teacher._id)}>Remove teacher</button>
                 </div>
                 )}
             </div>

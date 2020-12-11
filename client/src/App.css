@@ -68,6 +68,11 @@ a {
   font-size: 18px;
 }
 
+.auth-container .login-container .error, .auth-container .register-container .error {
+  background: #ffcccc;
+  border-bottom: 1px solid red;
+}
+
 .auth-container .login-container button, .auth-container .register-container button {
   background: #52ac62;
   padding: 5px;
@@ -234,13 +239,18 @@ a {
 }
 
 .dashboard .content-container .classes-container .class-cards .class-card {
-  width: 200px;
-  margin: 10px;
+  width: 25%;
   padding: 25px;
   border-radius: 5px;
   background: #F6F6F6;
   -webkit-box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
           box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+@media all and (max-width: 768px) {
+  .dashboard .content-container .classes-container .class-cards .class-card {
+    width: 50%;
+  }
 }
 
 .dashboard .content-container .classes-container .class-cards .class-card button {

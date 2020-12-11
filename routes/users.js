@@ -36,13 +36,14 @@ router.get('/:id', (req, res) => {
 //Register new user
 router.post('/register', async (req,res) => {
 
-    //Validation
-    const {error} = registerValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-
     //Check if user already exists
     const emailExist = await User.findOne({email: req.body.email});
-    if(emailExist) return res.status(400).send("Email already exists");
+    if(emailExist) return res.send("email-duplicate");
+
+    //Validation
+    const {error} = registerValidation(req.body);
+    if(error) return res.send(error.details[0].message);
+    
 
     //Hash the password
     const salt = await bcrypt.genSalt(10);
@@ -65,20 +66,21 @@ router.post('/register', async (req,res) => {
 
 //Login user
 router.post('/login', async (req,res) => {
+
     //Validate
     const {error} = loginValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.send(error.details[0].message);
 
     //Check if email exists
     const user = await User.findOne({email: req.body.email});
-    if(!user) return res.status(400).send("Email not found.");
-
-    //Check if user is authed
-    if (!user.isAuthed) return res.status(400).send("Not approved.");
+    if(!user) return res.send("email-not-found");
 
     //Validate password
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if(!validPass) return res.status(400).send("Invalid password.");
+    if(!validPass) return res.send("invalid-password");
+
+    //Check if user is authed
+    if (!user.isAuthed) return res.send("user-not-authorized");
 
     //Create and assigning token
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);

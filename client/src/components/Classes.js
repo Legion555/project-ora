@@ -1,27 +1,53 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../context/UserContext';
 
 const Classes = (props) => {
     //STATE
+    //UserData
+    // eslint-disable-next-line
+    const [userData, setUserData] = useContext(UserContext);
     //Add class
     const [addClassName, setAddClassName] = useState('');
     const [addClassBook, setAddClassBook] = useState('');
-    const [addClassLocalTeacher, setAddClassLocalTeacher] = useState('');
 
     //FUNCTIONS
     const createClass = (e) => {
         e.preventDefault();
+        const userToken = localStorage.getItem('userToken');
         const payload = {
             name: addClassName,
             book: addClassBook,
-            localTeacher: addClassLocalTeacher,
-            students: []
+            localTeacherName: userData.name,
+            localTeacherId: userData._id
         }
-        axios.post('/api/classes/create', payload)
-        .then(function (response) {
-            console.log('Class added successfully.');
-            props.readAllClasses();
-            setAddClassName(''); setAddClassBook(''); setAddClassLocalTeacher('');
+        axios.post('/api/classes/create', payload, {
+        headers: {
+            'auth-token': userToken
+        }
+        })
+        .then(res => {
+            const newClasses = userData.classes;
+            const _class = {
+              "name": addClassName,
+              "date": Date.now()
+            }
+            newClasses.push(_class);
+            axios.put("/api/teachers/addClass", newClasses, {
+            headers: {
+                'auth-token': userToken
+            }
+            })
+            .then(res => {
+                props.readAllClasses();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            
+        })
+        .catch(err => {
+            console.log(err);
         })
     }
     const deleteClass = (id) => {
@@ -58,7 +84,6 @@ const Classes = (props) => {
             <form className="add-class">
                 <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)}></input>
                 <input type="text" value={addClassBook} placeholder="Class book" onChange={(e) => setAddClassBook(e.target.value)}></input>
-                <input type="text" value={addClassLocalTeacher} placeholder="Local teacher" onChange={(e) => setAddClassLocalTeacher(e.target.value)}></input>
                 <button onClick={createClass}>Add class</button>
             </form>
             <div className="class-cards">

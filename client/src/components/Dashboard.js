@@ -41,7 +41,7 @@ const Dashboard = (props) => {
         }
         })
         .then((res) => {
-            console.log(res.data);
+            console.log(res.data)
             setTeachers(res.data);
             setView('teachers');
         })
@@ -58,7 +58,6 @@ const Dashboard = (props) => {
         }
         })
         .then((res) => {
-            console.log(res.data);
             setClasses(res.data);
             setView('classes');
         })
@@ -73,7 +72,7 @@ const Dashboard = (props) => {
             <div className="navigation-container">
                 <div className="links">
                     <img src={Circle} alt="profile" width="60px"></img>
-                    <p>Welcome {userData.name}</p>
+                    <p>{userData.name}<br/><i>{userData.authority}</i></p>
                     <p className="link" onClick={() => setView('default')} ><RiDashboardFill className="icon" /><br/>Dashboard</p>
                     {userData.authority === 'admin' &&
                         <p className="link" onClick={readAllTeachers} ><GiTeacher className="icon" /><br/>Teachers</p>
@@ -93,11 +92,20 @@ const Dashboard = (props) => {
                 </div>
                 {view === 'default' && 
                 <div className="default-container">
+                    {userData.authority === 'admin' &&
+                    <div className="section-card">
+                        <h1>Teachers</h1>
+                        <GiTeacher className="icon"/>
+                        <button onClick={readAllTeachers}>View</button>
+                    </div>
+                    }
+                    {userData.authority === ('teacher' || 'admin') &&
                     <div className="section-card">
                         <h1>Classes</h1>
                         <SiGoogleclassroom className="icon"/>
                         <button onClick={readAllClasses}>View</button>
                     </div>
+                    }
                 </div>
                 }
                 {view === 'teachers' &&

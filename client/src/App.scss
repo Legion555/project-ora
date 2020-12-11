@@ -69,6 +69,10 @@ a {
       border-bottom: 1px solid black;
       font-size: 18px;
     }
+    .error {
+      background: lighten($color: red, $amount: 40);
+      border-bottom: 1px solid red;
+    }
     button {
       background: $color-accent-one;
       padding: 5px;
@@ -179,12 +183,14 @@ a {
       .class-cards{
         display: flex; justify-content: space-evenly; align-items: center; flex-wrap: wrap;
         .class-card {
-          width: 200px;
-          margin: 10px;
+          width: 25%;
           padding: 25px;
           border-radius: 5px;
           background: $color-light;
           box-shadow: $shadow-main;
+          @media all and (max-width: $tablet) {
+            width: 50%;
+          }
           button {
             padding: 5px;
             margin: 5px 0;

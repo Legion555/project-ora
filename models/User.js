@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 'teacher'
     },
+    classes: {
+        type: Array,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
