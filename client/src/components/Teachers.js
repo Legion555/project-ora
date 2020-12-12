@@ -6,7 +6,11 @@ const Teachers = (props) => {
     //FUNCTIONS
     const authorizeUser = (e, id) => {
         e.preventDefault();
-        axios.put("/api/teachers/authTeacher/" + id)
+        axios.put("/api/teachers/authTeacher/" + id, {
+        headers: {
+            'auth-token': userToken
+        }
+        })
         .then((res) => {
             console.log(res.data);
             props.readAllTeachers();
@@ -17,7 +21,11 @@ const Teachers = (props) => {
     }
     const deleteTeacher = (e, id) => {
         e.preventDefault();
-        axios.delete("/api/teachers/deleteTeacher/" + id)
+        axios.delete("/api/teachers/deleteTeacher/" + id, {
+        headers: {
+            'auth-token': userToken
+        }
+        })
         .then((res) => {
             console.log(res.data);
             props.readAllTeachers();
