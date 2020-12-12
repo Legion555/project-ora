@@ -11,7 +11,10 @@ const classSchema = new mongoose.Schema({
     book: {
         type: String
     },
-    localTeacher: {
+    localTeacherName: {
+        type: String
+    },
+    localTeacherId: {
         type: String
     },
     foreignTeacher: {

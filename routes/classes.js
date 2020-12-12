@@ -14,14 +14,26 @@ router.post('/create', verify, async (req,res) => {
     });
     try{
         const savedClass = await newClass.save();
-        res.send({newClass: newClass._id});
+        res.send(newClass._id);
     }catch(err){
         res.status(400).send(err);
     }
 })
 //read all classes
-router.get('/', verify, (req, res) => {
+router.get('/', (req, res) => {
   Class.find().then(items => res.json(items));
+})
+//read authorized classes classes
+router.get('/readAuthorizedClasses', (req, res) => {
+  Class.find({ _id: { $in: req.query.classIds } },
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  )
 })
 //delete class
 router.delete('/delete/:id', (req, res) => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const Teachers = (props) => {
+    const userToken = localStorage.getItem('userToken');
     //STATE
 
     //FUNCTIONS

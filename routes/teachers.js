@@ -27,7 +27,7 @@ router.put('/authTeacher/:id', (req, res) => {
 //delete teacher
 router.delete('/deleteTeacher/:id', verify, (req, res) => {
   const id = req.params.id;
-  User.remove({ _id: id },
+  User.deleteOne({ _id: id },
   function(err, result) {
     if (err) {
       res.send(err);
@@ -37,10 +37,25 @@ router.delete('/deleteTeacher/:id', verify, (req, res) => {
   })
 })
 
-//add class
-router.put('/addClass', verify, (req, res) => {
+//add class to teacher - for reference
+router.put('/addClass', (req, res) => {
   User.findByIdAndUpdate(
-    { _id: req.body.id },  
+    { _id: req.body.userId  },  
+    { classes: req.body.classes },
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})
+//delete class from teacher - for reference
+router.put('/deleteClass', verify, (req, res) => {
+  console.log(req.body);
+  User.findByIdAndUpdate(
+    { _id: req.body.userId  },  
     { classes: req.body.classes },
     function(err, result) {
       if (err) {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 
 const Classes = (props) => {
+    const userToken = localStorage.getItem('userToken');
     //STATE
     //UserData
     // eslint-disable-next-line
@@ -21,19 +22,70 @@ const Classes = (props) => {
             localTeacherName: userData.name,
             localTeacherId: userData._id
         }
+        //Create new class document
         axios.post('/api/classes/create', payload, {
         headers: {
             'auth-token': userToken
         }
         })
         .then(res => {
+            //Add class to teacher document for reference
             const newClasses = userData.classes;
             const _class = {
               "name": addClassName,
+              "id": res.data,
+              "teacherId": userData._id,
               "date": Date.now()
             }
             newClasses.push(_class);
-            axios.put("/api/teachers/addClass", newClasses, {
+            const payload = {
+                userId: userData._id,
+                classes: newClasses
+            }
+            axios.put("/api/teachers/addClass", payload, {
+            headers: {
+                'auth-token': userToken
+            }
+            })
+            .then(res => {
+                //Update data on client
+                props.readAllClasses();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+    const deleteClass = (id) => {
+        //Remove class document
+        axios.delete("/api/classes/delete/" + id)
+        .then((res) => {
+            // const newClasses = userData.classes;
+            // const filteredClasses = newClasses.filter(_class => _class._id !== id);
+            // axios.put("/api/teachers/deleteClass", filteredClasses, {
+            //     headers: {
+            //         'auth-token': userToken
+            //     }
+            //     })
+            //     .then(res => {
+            //         props.readAllClasses();
+            //         console.log(userData);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+            //Remove class from teacher document for reference
+            const newClasses = userData.classes;
+            const filteredClasses = newClasses.filter(_class => _class.id !== id);
+            console.log(filteredClasses);
+            const payload = {
+                userId: userData._id,
+                classes: filteredClasses
+            }
+            axios.put("/api/teachers/deleteClass", payload, {
             headers: {
                 'auth-token': userToken
             }
@@ -44,17 +96,6 @@ const Classes = (props) => {
             .catch(err => {
                 console.log(err);
             })
-            
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
-    const deleteClass = (id) => {
-        axios.delete("/api/classes/delete/" + id)
-        .then((res) => {
-            console.log('Class deleted');
-            props.readAllClasses();
         })
         .catch((err) => {
             console.log(err);
@@ -91,7 +132,7 @@ const Classes = (props) => {
                 <div className="class-card" key={_class._id}>
                     <h3>{_class.name}</h3>
                     <p>Book: {_class.book}</p>
-                    <p>Students: {_class.students.length}</p>
+                    <p>Local Teacher: {_class.localTeacherName}</p>
                     <button onClick={(id) => getClassData(_class._id)}>View class</button><br/>
                     <button onClick={(id) => deleteClass(_class._id)} className="delete-class-button">Delete class</button>
                 </div>

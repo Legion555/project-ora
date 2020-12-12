@@ -15,6 +15,7 @@ import { RiDashboardFill } from 'react-icons/ri';
 import Circle from '../assets/circle.png';
 
 const Dashboard = (props) => {
+    const userToken = localStorage.getItem('userToken');
     //UserData
     // eslint-disable-next-line
     const [userData, setUserData] = useContext(UserContext);
@@ -34,7 +35,6 @@ const Dashboard = (props) => {
     }
     //Teachers
     const readAllTeachers = () => {
-        const userToken = localStorage.getItem('userToken');
         axios.get('./api/teachers', {
         headers: {
             'auth-token': userToken
@@ -51,13 +51,29 @@ const Dashboard = (props) => {
     }
     //Classes
     const readAllClasses = () => {
-        const userToken = localStorage.getItem('userToken');
         axios.get('./api/classes', {
         headers: {
             'auth-token': userToken
         }
         })
         .then((res) => {
+            setClasses(res.data);
+            setView('classes');
+        })
+        .catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
+    const readAuthorizedClasses = () => {
+        const classIds = userData.classes.map(item => item.id);
+        console.log(classIds)
+        axios.get('./api/classes/readAuthorizedClasses', {params: {classIds: classIds}}, {
+        headers: {
+            'auth-token': userToken
+        }
+        })
+        .then((res) => {
+            console.log(res.data)
             setClasses(res.data);
             setView('classes');
         })
@@ -77,7 +93,7 @@ const Dashboard = (props) => {
                     {userData.authority === 'admin' &&
                         <p className="link" onClick={readAllTeachers} ><GiTeacher className="icon" /><br/>Teachers</p>
                     }
-                    <p className="link" onClick={readAllClasses} ><SiGoogleclassroom className="icon" /><br/>Classes</p>
+                    <p className="link" onClick={userData.authority === 'admin' ? readAllClasses : readAuthorizedClasses} ><SiGoogleclassroom className="icon" /><br/>Classes</p>
                 </div>
                 <div className="logout">
                     <p onClick={logout}><FaPowerOff /></p>
@@ -88,7 +104,7 @@ const Dashboard = (props) => {
                     {view === 'default' && <p>Dashboard</p>}
                     {view === 'teachers' && <p>Teachers</p>}
                     {view === 'classes' && <p>Classes</p>}
-                    {view === 'class' && <p><span onClick={readAllClasses}>Classes</span> &gt; {classData.name}</p>}
+                    {view === 'class' && <p><span onClick={userData.authority === 'admin' ? readAllClasses : readAuthorizedClasses}>Classes</span> &gt; {classData.name}</p>}
                 </div>
                 {view === 'default' && 
                 <div className="default-container">
@@ -103,7 +119,7 @@ const Dashboard = (props) => {
                     <div className="section-card">
                         <h1>Classes</h1>
                         <SiGoogleclassroom className="icon"/>
-                        <button onClick={readAllClasses}>View</button>
+                        <button onClick={userData.authority === 'admin' ? readAllClasses : readAuthorizedClasses}>View</button>
                     </div>
                     }
                 </div>
