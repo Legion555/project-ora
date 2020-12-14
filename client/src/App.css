@@ -158,20 +158,7 @@ a {
   height: 100%;
 }
 
-.dashboard .content-container .breadcrumb {
-  width: 100%;
-  height: 50px;
-  background: #4c78a8;
-}
-
-.dashboard .content-container .breadcrumb p {
-  line-height: 50px;
-  font-size: 32px;
-  margin-left: 25px;
-  color: #282C34;
-}
-
-.dashboard .content-container .default-container {
+.default-container {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -184,7 +171,7 @@ a {
   padding: 10px;
 }
 
-.dashboard .content-container .default-container .section-card {
+.default-container .section-card {
   width: auto;
   margin: 10px;
   padding: 50px;
@@ -194,13 +181,13 @@ a {
           box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
-.dashboard .content-container .default-container .section-card .icon {
+.default-container .section-card .icon {
   display: block;
   font-size: 200px;
   color: #52ac62;
 }
 
-.dashboard .content-container .default-container .section-card button {
+.default-container .section-card button {
   padding: 10px;
   border: none;
   border-radius: 10px;
@@ -211,20 +198,150 @@ a {
   transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
 }
 
-.dashboard .content-container .default-container .section-card button:hover {
+.default-container .section-card button:hover {
   border-radius: 0;
 }
 
-.dashboard .content-container .classes-container {
+.schools-container {
   width: 100%;
 }
 
-.dashboard .content-container .classes-container .add-class {
+.schools-container .section-nav {
+  width: 100%;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background: #4c78a8;
+}
+
+.schools-container .section-nav .breadcrumb p {
+  margin-left: 10px;
+  line-height: 40px;
+  font-size: 18px;
+  color: #F6F6F6;
+}
+
+.schools-container .section-nav .functions button {
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  font-size: 18px;
+}
+
+.schools-container .section-nav .functions button:hover {
+  cursor: pointer;
+}
+
+.schools-container .section-nav .functions .button-create-school {
+  color: #F6F6F6;
+  background: green;
+}
+
+.schools-container .section-nav .functions .button-create-school:hover {
+  color: green;
+  background: #F6F6F6;
+}
+
+.schools-container .section-nav .functions .button-assign-manager {
+  color: #F6F6F6;
+  background: #cc8400;
+}
+
+.schools-container .section-nav .functions .button-assign-manager:hover {
+  color: #cc8400;
+  background: #F6F6F6;
+}
+
+.schools-container .functions-container {
+  width: auto;
+  height: auto;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #e6e6e6;
+}
+
+.schools-container .schools-info {
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #e6e6e6;
+}
+
+.managers-container {
+  width: 100%;
+}
+
+.managers-container .section-nav {
+  width: 100%;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background: #4c78a8;
+}
+
+.managers-container .section-nav .breadcrumb p {
+  margin-left: 10px;
+  line-height: 40px;
+  font-size: 18px;
+  color: #F6F6F6;
+}
+
+.managers-container .section-nav .functions button {
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  font-size: 18px;
+}
+
+.managers-container .section-nav .functions button:hover {
+  cursor: pointer;
+}
+
+.managers-container .section-nav .functions .button-create-manager {
+  color: #F6F6F6;
+  background: green;
+}
+
+.managers-container .section-nav .functions .button-create-manager:hover {
+  color: green;
+  background: #F6F6F6;
+}
+
+.managers-container .functions-container {
+  width: auto;
+  height: auto;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #e6e6e6;
+}
+
+.managers-container .managers-info {
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #e6e6e6;
+}
+
+.classes-container {
+  width: 100%;
+}
+
+.classes-container .add-class {
   width: 400px;
   margin: auto;
 }
 
-.dashboard .content-container .classes-container .class-cards {
+.classes-container .class-cards {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -238,7 +355,7 @@ a {
       flex-wrap: wrap;
 }
 
-.dashboard .content-container .classes-container .class-cards .class-card {
+.classes-container .class-cards .class-card {
   width: 25%;
   padding: 25px;
   border-radius: 5px;
@@ -248,12 +365,12 @@ a {
 }
 
 @media all and (max-width: 768px) {
-  .dashboard .content-container .classes-container .class-cards .class-card {
+  .classes-container .class-cards .class-card {
     width: 50%;
   }
 }
 
-.dashboard .content-container .classes-container .class-cards .class-card button {
+.classes-container .class-cards .class-card button {
   padding: 5px;
   margin: 5px 0;
   border: none;
@@ -265,23 +382,23 @@ a {
   transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
 }
 
-.dashboard .content-container .classes-container .class-cards .class-card button:hover {
+.classes-container .class-cards .class-card button:hover {
   border-radius: 0;
 }
 
-.dashboard .content-container .classes-container .class-cards .class-card .delete-class-button {
+.classes-container .class-cards .class-card .delete-class-button {
   background: #990000;
 }
 
-.dashboard .content-container .class-container .class-details-container {
+.class-container .class-details-container {
   text-align: center;
 }
 
-.dashboard .content-container .class-container .add-student-container {
+.class-container .add-student-container {
   text-align: center;
 }
 
-.dashboard .content-container .class-container .students-container {
+.class-container .students-container {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -294,7 +411,7 @@ a {
   padding: 10px;
 }
 
-.dashboard .content-container .class-container .students-container .student-card {
+.class-container .students-container .student-card {
   width: 200px;
   margin: 10px;
   padding: 10px;

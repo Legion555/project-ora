@@ -14,10 +14,15 @@ mongoose.connect(process.env.MONGODB_URI,
     () => console.log("Connected to DB")
 )
 
-//Import routes
+//Import route
 const usersRoute = require('./routes/users');
-const classesRoute = require('./routes/classes');
+const adminsRoute = require('./routes/admins');
+const managersRoute = require('./routes/managers');
 const teachersRoute = require('./routes/teachers');
+const schoolsRoute = require('./routes/schools');
+const classesRoute = require('./routes/classes');
+const studentsRoute = require('./routes/students');
+
 
 //Middleware
 app.use(express.json());
@@ -25,8 +30,12 @@ app.use(cors());
 
 //Route middleware
 app.use('/api/users', usersRoute);
-app.use('/api/classes', classesRoute);
+app.use('/api/admins', adminsRoute);
+app.use('/api/managers', managersRoute);
 app.use('/api/teachers', teachersRoute);
+app.use('/api/schools', schoolsRoute);
+app.use('/api/classes', classesRoute);
+app.use('/api/students', studentsRoute);
 
 //Client route
 if(process.env.NODE_ENV === 'production') {
