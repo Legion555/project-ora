@@ -11,15 +11,18 @@ const classSchema = new mongoose.Schema({
     book: {
         type: String
     },
-    teacherName: {
-        type: String
+    school: {
+        type: Object,
+        default: {'name': 'unassigned', 'id': 'unassigned'}
     },
-    teacherId: {
-        type: String
+    teacher: {
+        type: Object,
+        default: {'name': 'unassigned', 'id': 'unassigned'}
     },
     students: {
         type: Array
     }
+    
 });
 
 module.exports = mongoose.model('Class', classSchema)

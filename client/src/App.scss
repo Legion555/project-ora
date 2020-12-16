@@ -120,6 +120,9 @@ a {
           font-size: 32px;
         }
       }
+      .link-active {
+        border-left: 5px solid $color-accent-one;
+      }
     }
     .logout{
       padding: 5px;
@@ -138,10 +141,8 @@ a {
     width: calc(100% - 75px); height: 100%;
   }
 }
-//Dashboard template
-
 //Dashboard view
-.default-container {
+.dashboard-container {
   width: 100%;
   display: flex; justify-content: space-evenly; flex-wrap: wrap;
   padding: 10px;
@@ -229,7 +230,6 @@ a {
     background: darken($color: white, $amount: 10);
   }
 }
-
 //Managers view
 .managers-container {
   width: 100%;
@@ -279,41 +279,102 @@ a {
     background: darken($color: white, $amount: 10);
   }
 }
-
+//Teachers view
+.teachers-container {
+  width: 100%;
+  .section-nav {
+    width: 100%; height: 40px;
+    display: flex; justify-content: space-between;
+    background: $color-accent-two;
+    .breadcrumb {
+      p {
+        margin-left: 10px;
+        line-height: 40px;
+        font-size: 18px;
+        color: $color-light;
+      }
+    }
+    .functions {
+      button {
+        height: 100%;
+        padding: 0 10px;
+        border: none;
+        font-size: 18px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .button-create-teacher {
+        color: $color-light;
+        background: green;
+        &:hover {
+          color: green;
+          background: $color-light;
+        }
+      }
+    }
+  }
+  .functions-container {
+    width: auto; height: auto;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: darken($color: white, $amount: 10);
+  }
+  .teachers-info {
+    margin: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: darken($color: white, $amount: 10);
+  }
+}
 //Classes view
 .classes-container {
   width: 100%;
-  .add-class {
-    width: 400px; margin: auto;
-  }
-  .class-cards{
-    display: flex; justify-content: space-evenly; align-items: center; flex-wrap: wrap;
-    .class-card {
-      width: 25%;
-      padding: 25px;
-      border-radius: 5px;
-      background: $color-light;
-      box-shadow: $shadow-main;
-      @media all and (max-width: $tablet) {
-        width: 50%;
-      }
-      button {
-        padding: 5px;
-        margin: 5px 0;
-        border: none;
-        border-radius: 5px;
-        font-size: 14px;
-        background: $color-accent-two;
+  .section-nav {
+    width: 100%; height: 40px;
+    display: flex; justify-content: space-between;
+    background: $color-accent-two;
+    .breadcrumb {
+      p {
+        margin-left: 10px;
+        line-height: 40px;
+        font-size: 18px;
         color: $color-light;
-        transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
-        &:hover {
-          border-radius: 0;
-        }
-      }
-      .delete-class-button {
-        background: darken($color: red, $amount: 20);
       }
     }
+    .functions {
+      button {
+        height: 100%;
+        padding: 0 10px;
+        border: none;
+        font-size: 18px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .button-create-class {
+        color: $color-light;
+        background: green;
+        &:hover {
+          color: green;
+          background: $color-light;
+        }
+      }
+    }
+  }
+  .functions-container {
+    width: auto; height: auto;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: darken($color: white, $amount: 10);
+  }
+  .classes-info {
+    margin: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: darken($color: white, $amount: 10);
   }
 }
 //Class view

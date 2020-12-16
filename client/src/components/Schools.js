@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Classes = (props) => {
     // eslint-disable-next-line
     const userToken = localStorage.getItem('userToken');
     const [functionView, setFunctionView] = useState('');
-    
+    const [schools, setSchools] = useState({});
+    const [managers, setManagers] = useState({});
     //Add school
     const [addSchoolName, setAddSchoolName] = useState('');
     const [addSchoolAddress, setAddSchoolAddress] = useState('');
@@ -13,6 +14,27 @@ const Classes = (props) => {
     //Assign manager
     const [inputAssignManagerSchoolId, setInputAssignManagerSchoolId] = useState('');
     const [inputAssignManagerId, setInputAssignManagerId] = useState('');
+
+    useEffect(() => {
+        readSchools()
+    // eslint-disable-next-line
+    }, []);
+    const readSchools = () => {
+        axios.get('./api/schools')
+        .then((res) => {
+            setSchools(res.data);
+            axios.get('./api/managers')
+            .then(res => {
+                setManagers(res.data);
+            })
+            .catch(err => {
+                console.error("Error: " + err)
+            })
+        })
+        .catch(err => {
+            console.error("Error: " + err)
+        })
+    }
 
     //FUNCTIONS
     //create school
@@ -26,19 +48,19 @@ const Classes = (props) => {
         //Create new class document
         axios.post('/api/schools/createSchool', payload)
         .then(res => {
-            props.readAllSchools();
+            props.readSchools();
             setFunctionView('');
+            setAddSchoolName(''); setAddSchoolAddress(''); setAddSchoolContactNumber('');
         })
         .catch(err => {
             console.log(err);
         })
     }
-    //read managers
     //assign manager to school
     const assignManager = (e) => {
         e.preventDefault();
-        const chosenManager = props.managers.filter(manager => manager._id === inputAssignManagerId );
-        const chosenSchool = props.schools.filter(school => school._id === inputAssignManagerSchoolId);
+        const chosenManager = managers.filter(manager => manager._id === inputAssignManagerId );
+        const chosenSchool = schools.filter(school => school._id === inputAssignManagerSchoolId);
         const payload = {
           "schoolId": chosenSchool[0]._id,
           "schoolName": chosenSchool[0].name,
@@ -50,7 +72,7 @@ const Classes = (props) => {
         .then((res) => {
             axios.put("/api/managers/addSchoolRef", payload)
             .then(res => {
-                props.readAllSchools();
+                readSchools();
                 setFunctionView('');
             })
             .catch(err => {
@@ -66,7 +88,7 @@ const Classes = (props) => {
         e.preventDefault();
         axios.delete("/api/schools/deleteSchool/" + id)
         .then((res) => {
-            props.readAllSchools();
+            readSchools();
         })
         .catch((err) => {
             console.log(err);
@@ -103,7 +125,7 @@ const Classes = (props) => {
                         <label>Choose a school: </label>
                         <select value={inputAssignManagerSchoolId} onChange={(e) => setInputAssignManagerSchoolId(e.target.value)}>
                             <option>Please choose a school</option>
-                            {props.schools.map(school => 
+                            {schools.map(school => 
                                 <option value={school._id} key={school._id}>{school.name}</option>
                             )}
                         </select>
@@ -111,7 +133,7 @@ const Classes = (props) => {
                         <label>Choose a manager: </label>
                         <select value={inputAssignManagerId} onChange={(e) => setInputAssignManagerId(e.target.value)} >
                             <option>Please choose a manager</option>
-                            {props.managers.map(manager => 
+                            {managers.map(manager => 
                                 <option value={manager._id} key={manager._id}>{manager.name}</option>
                             )}
                         </select>
@@ -123,11 +145,11 @@ const Classes = (props) => {
             </div>
             
             <div className="schools-info">
-                {props.schools.map(school => 
+                {schools.length > 0 && schools.map(school => 
                 <div className="school-info" key={school._id}>
                     <h3>{school.name}</h3>
                     <p>Address: {school.address}</p>
-                    <p>Manager: {school.manager && school.manager.managerName}</p>
+                    <p>Manager: {school.manager && school.manager.name}</p>
                     <button onClick={(e) => deleteSchool(e, school._id)}>Delete school</button>
                     <br/><br/>
                 </div>

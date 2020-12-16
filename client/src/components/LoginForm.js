@@ -52,12 +52,11 @@ const LoginForm = (props) => {
     const login = (e, email, password) => {
         e.preventDefault();
         const details = {
-            email: loginEmail,
-            password: loginPassword
+            email: email,
+            password: password
         }
         axios.post('/api/users/login', details)
         .then(res => {
-            console.log(res.data);
             switch (res.data) {
                 case '"email" is not allowed to be empty':
                     setErrorHandle(['email' ,'Email cannot be empty'])
@@ -110,6 +109,67 @@ const LoginForm = (props) => {
             })
         })
     }
+    const loginAdmin = (e) => {
+        e.preventDefault();
+        const details = {
+            email: 'legion@gmail.com',
+            password: 'legion555'
+        }
+        axios.post('/api/users/login', details)
+        .then(res => {
+            props.setLoggedIn(true);
+            axios.get('/api/users', {
+                params: {
+                    email: 'legion@gmail.com'
+                }
+            })
+            .then(res => {
+                const newUserData = res.data;
+                setUserData(newUserData);
+            })
+        })
+    }
+    const loginManager = (e) => {
+        e.preventDefault();
+        const details = {
+            email: 'testmanager@gmail.com',
+            password: 'testmanager123'
+        }
+        axios.post('/api/users/login', details)
+        .then(res => {
+            props.setLoggedIn(true);
+            axios.get('/api/users', {
+                params: {
+                    email: 'testmanager@gmail.com'
+                }
+            })
+            .then(res => {
+                const newUserData = res.data;
+                setUserData(newUserData);
+            })
+        })
+    }
+    const loginTeacher = (e) => {
+        e.preventDefault();
+        const details = {
+            email: 'testteacher1@gmail.com',
+            password: 'testteacher1123'
+        }
+        axios.post('/api/users/login', details)
+        .then(res => {
+            props.setLoggedIn(true);
+            axios.get('/api/users', {
+                params: {
+                    email: 'testteacher1@gmail.com'
+                }
+            })
+            .then(res => {
+                const newUserData = res.data;
+                setUserData(newUserData);
+            })
+        })
+    }
+
     //Register new user
     const register = (e) => {
         e.preventDefault();
@@ -159,6 +219,19 @@ const LoginForm = (props) => {
     
     return (
         <div className="auth-container">
+            <div>
+                <h2>Login as admin</h2>
+                <button onClick={loginAdmin}>Login</button>
+            </div><br/>
+            <div>
+                <h2>Login as manager</h2>
+                <button onClick={loginManager}>Login</button>
+            </div><br/>
+            <div>
+                <h2>Login as teacher</h2>
+                <button onClick={loginTeacher}>Login</button>
+            </div>
+            <br/><br/><br/>
             {view === 'login' &&
             <div className="login-container">
                 <h1>Login with an existing account</h1>
@@ -167,7 +240,7 @@ const LoginForm = (props) => {
                     placeholder={errorHandle[0] === "email" ? errorHandle[1] : "Email"}  name="email" value={loginEmail}></input>
                     <input className={errorHandle[0] === 'password' ? "error" : undefined}  onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder={errorHandle[0] === "password" ? errorHandle[1] : "Password"} name="password" value={loginPassword}></input>
-                    <button onClick={login}>Login</button>
+                    <button onClick={(e) => login(e, loginEmail, loginPassword)}>Login</button>
                 </form>
                 {errorHandle === 'not-authorized' &&
                 <p>Not approved yet.<br/>Please wait for Manager's approval.</p>

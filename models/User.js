@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     school: {
         type: Object,
-        default: {'schoolName': 'unassigned', 'schoolId': 'unassigned'}
+        default: {'name': 'unassigned', 'id': 'unassigned'}
     },
     //Teacher
     classes: {

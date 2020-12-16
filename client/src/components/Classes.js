@@ -1,55 +1,90 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from '../context/UserContext';
 
 const Classes = (props) => {
-    const userToken = localStorage.getItem('userToken');
-    //STATE
-    //UserData
     // eslint-disable-next-line
-    const [userData, setUserData] = useContext(UserContext);
-    //Add class
+    const userToken = localStorage.getItem('userToken');
+    const [functionView, setFunctionView] = useState('');
+    const [classes, setClasses] = useState({});
+    const [teachers, setTeachers] = useState({});
+    //Add class inputs
     const [addClassName, setAddClassName] = useState('');
-    const [addClassBook, setAddClassBook] = useState('');
+    //Assign teacher
+    const [inputAssignTeacherClassId, setInputAssignTeacherClassId] = useState('');
+    const [inputAssignTeacherId, setInputAssignTeacherId] = useState('');
+
+    useEffect(() => {
+        readClasses()
+        readTeachers()
+
+        //cleanup after component unmounts
+        return () => {
+            setClasses({});
+            setTeachers({});
+        };
+    // eslint-disable-next-line
+    }, []);
+    const readClasses = () => {
+        switch (props.userData.authority) {
+            //read classes of school (for manager)
+            case 'manager':
+                axios.get('./api/classes/readSchoolClasses',
+                { params: { schoolId: props.userData.school.id } } )
+                .then((res) => {
+                    setClasses(res.data);
+                })
+                .catch((error) => {
+                    console.error("Error: " + error)
+                })
+                break;
+            //read classes of teacher
+            case 'teacher':
+                axios.get('./api/classes/readTeacherClasses',
+                { params: { teacherId: props.userData._id } } )
+                .then((res) => {
+                    setClasses(res.data);
+                })
+                .catch((error) => {
+                    console.error("Error: " + error)
+                })
+                break;
+            default:
+                break;
+        }
+    }
+    const readTeachers = () => {
+        //readByschool
+        axios.get('./api/teachers/readAuthorizedTeachers',
+        { params: { schoolId: props.userData.school.id } } )
+        .then((res) => {
+            setTeachers(res.data);
+        })
+        .catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
 
     //FUNCTIONS
+    //Create class
     const createClass = (e) => {
         e.preventDefault();
-        const userToken = localStorage.getItem('userToken');
         const payload = {
-            name: addClassName,
-            book: addClassBook,
-            localTeacherName: userData.name,
-            localTeacherId: userData._id
+            className: addClassName,
+            schoolName: props.userData.school.name,
+            schoolId: props.userData.school.id
         }
-        //Create new class document
-        axios.post('/api/classes/create', payload, {
-        headers: {
-            'auth-token': userToken
-        }
-        })
+        axios.post('/api/classes/createClass', payload)
         .then(res => {
-            //Add class to teacher document for reference
-            const newClasses = userData.classes;
-            const _class = {
-              "name": addClassName,
-              "id": res.data,
-              "teacherId": userData._id,
-              "date": Date.now()
+            const classData = {
+                schoolId: props.userData.school.id,
+                className: res.data.name,
+                classId: res.data._id
             }
-            newClasses.push(_class);
-            const payload = {
-                userId: userData._id,
-                classes: newClasses
-            }
-            axios.put("/api/teachers/addClass", payload, {
-            headers: {
-                'auth-token': userToken
-            }
-            })
+            axios.put('/api/schools/addClass', classData)
             .then(res => {
-                //Update data on client
-                props.readAllClasses();
+                readClasses();
+                setFunctionView('');
+                setAddClassName('');
             })
             .catch(err => {
                 console.log(err);
@@ -59,85 +94,127 @@ const Classes = (props) => {
             console.log(err);
         })
     }
-    const deleteClass = (id) => {
-        //Remove class document
-        axios.delete("/api/classes/delete/" + id)
+    //assign teacher to class
+    const assignTeacher = (e) => {
+        e.preventDefault();
+        const chosenClass = classes.filter(_class => _class._id === inputAssignTeacherClassId);
+        const chosenTeacher = teachers.filter(teacher => teacher._id === inputAssignTeacherId );
+        const payload = {
+          "classId": chosenClass[0]._id,
+          "className": chosenClass[0].name,
+          "teacherId": chosenTeacher[0]._id,
+          "teacherName": chosenTeacher[0].name
+        }
+        //assign teacher to class
+        axios.put("/api/classes/addTeacher", payload)
         .then((res) => {
-            // const newClasses = userData.classes;
-            // const filteredClasses = newClasses.filter(_class => _class._id !== id);
-            // axios.put("/api/teachers/deleteClass", filteredClasses, {
-            //     headers: {
-            //         'auth-token': userToken
-            //     }
-            //     })
-            //     .then(res => {
-            //         props.readAllClasses();
-            //         console.log(userData);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     })
-            //Remove class from teacher document for reference
-            const newClasses = userData.classes;
-            const filteredClasses = newClasses.filter(_class => _class.id !== id);
-            console.log(filteredClasses);
-            const payload = {
-                userId: userData._id,
-                classes: filteredClasses
+            //assign class to teacher
+            if ( !chosenTeacher[0].classes.some( _class => _class.id === chosenClass[0]._id ) ) {
+                axios.put("/api/teachers/addClass", payload)
+                .then(res => {
+                    readClasses();
+                    setFunctionView('');
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            } else {
+                readClasses();
             }
-            axios.put("/api/teachers/deleteClass", payload, {
-            headers: {
-                'auth-token': userToken
-            }
-            })
-            .then(res => {
-                props.readAllClasses();
-            })
-            .catch(err => {
-                console.log(err);
-            })
         })
         .catch((err) => {
             console.log(err);
         })
     }
-
-    const getClassData = (id) => {
-        const userToken = localStorage.getItem('userToken');
-        axios.get('./api/classes/' + id, {
-        headers: {
-            'auth-token': userToken
-        }
+    //Delete class
+    const deleteClass = (e, classId, teacherId) => {
+        e.preventDefault();
+        //delete class document
+        axios.delete("/api/classes/deleteClass/" + classId)
+        .then(res => {
+            //remove class ref from school
+            const payload = {
+                schoolId: props.userData.school.id,
+                classId: classId,
+                teacherId: teacherId
+            }
+            axios.put('/api/schools/removeClass', payload)
+            .then(res => {
+                //remove class ref from teacher
+                axios.put('/api/teachers/removeClass', payload)
+                readClasses();
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
-        .then((res) => {
-            console.log(res.data[0]);
-            props.setClassData(res.data[0]);
-            props.setView('class');
-        })
-
-        .catch((error) => {
-            console.error("Error: " + error)
+        .catch(err => {
+            console.log(err);
         })
     }
 
     return (
         <div className="classes-container">
-            <form className="add-class">
-                <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)}></input>
-                <input type="text" value={addClassBook} placeholder="Class book" onChange={(e) => setAddClassBook(e.target.value)}></input>
-                <button onClick={createClass}>Add class</button>
-            </form>
-            <div className="class-cards">
-                {props.classes.map(_class => 
-                <div className="class-card" key={_class._id}>
-                    <h3>{_class.name}</h3>
-                    <p>Book: {_class.book}</p>
-                    <p>Local Teacher: {_class.localTeacherName}</p>
-                    <button onClick={(id) => getClassData(_class._id)}>View class</button><br/>
-                    <button onClick={(id) => deleteClass(_class._id)} className="delete-class-button">Delete class</button>
+
+            <div className="section-nav">
+                <div className="breadcrumb">
+                    <p>Classes</p>
+                </div>
+                {props.userData.authority === 'manager' &&
+                <div className="functions">
+                    <button className="button-assign-teacher" onClick={() => setFunctionView("assign-teacher")}>assign teacher</button>
+                    <button className="button-create-class" onClick={() => setFunctionView("create-class")}>create</button>
+                </div>
+                }
+            </div>
+
+            <div className="functions-container">
+                {functionView === "create-class" &&
+                <form className="add-class">
+                    <input type="text" value={addClassName} placeholder="Class name" onChange={(e) => setAddClassName(e.target.value)} autoFocus></input>
+                    <button onClick={createClass}>Create class</button>
+                    <button onClick={() => setFunctionView("")}>Cancel</button>
+                </form>
+                }
+                {functionView === "assign-teacher" &&
+                <form>
+                    <div>
+                        <label>Choose a class: </label>
+                        <select value={inputAssignTeacherClassId} onChange={(e) => setInputAssignTeacherClassId(e.target.value)}>
+                            <option>Please choose a class</option>
+                            {classes.map(_class => _class.teacher.name === 'unassigned' &&
+                                <option value={_class._id} key={_class._id}>{_class.name}</option>
+                            )}
+                        </select>
+                        <br/>
+                        <label>Choose a teacher: </label>
+                        <select value={inputAssignTeacherId} onChange={(e) => setInputAssignTeacherId(e.target.value)} >
+                            <option>Please choose a teacher</option>
+                            {teachers.map(teacher => 
+                                <option value={teacher._id} key={teacher._id}>{teacher.name}</option>
+                            )}
+                        </select>
+                    </div>
+                    <button onClick={(e) => assignTeacher(e)}>Add teacher</button>
+                    <button onClick={() => setFunctionView("")}>Cancel</button>
+                </form>
+                }
+            </div>
+
+            <div className="classes-info">
+                {classes.length > 0 && classes.map(_class => 
+                <div className="class-info" key={_class._id}>
+                    <h1>{_class.name}</h1>
+                    <p>Teacher: {_class.teacher.name}</p>
+                    {props.userData.authority === 'manager' &&
+                    <button onClick={(e) => deleteClass(e, _class._id, _class.teacher.id)}>Delete class</button>
+                    }
+                    <br/>
+                    <br/>
                 </div>
                 )}
             </div>
+
         </div>
     )
 }

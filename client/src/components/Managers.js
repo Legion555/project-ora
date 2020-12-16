@@ -1,14 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Managers = (props) => {
     // eslint-disable-next-line
     const userToken = localStorage.getItem('userToken');
     const [functionView, setFunctionView] = useState('');
+    const [managers, setManagers] = useState({});
     //Add manager inputs
     const [addManagerName, setAddManagerName] = useState('');
     const [addManagerEmail, setAddManagerEmail] = useState('');
     const [addManagerPassword, setAddManagerPassword] = useState('');
+
+    useEffect(() => {
+        readAllManagers()
+    // eslint-disable-next-line
+    }, []);
+    const readAllManagers = () => {
+        axios.get('./api/managers')
+        .then((res) => {
+            setManagers(res.data);
+        })
+        .catch((error) => {
+            console.error("Error: " + error)
+        })
+    }
     
 
     //FUNCTIONS
@@ -23,7 +38,7 @@ const Managers = (props) => {
         //Create new class document
         axios.post('/api/managers/createManager', payload)
         .then(res => {
-            props.readAllManagers();
+            readAllManagers();
             setFunctionView('');
             setAddManagerName(''); setAddManagerEmail(''); setAddManagerPassword('');
         })
@@ -36,7 +51,7 @@ const Managers = (props) => {
         e.preventDefault();
         axios.delete("/api/managers/deleteManager/" + id)
         .then((res) => {
-            props.readAllManagers();
+            readAllManagers();
         })
         .catch((err) => {
             console.log(err);
@@ -69,11 +84,11 @@ const Managers = (props) => {
             </div>
 
             <div className="managers-info">
-                {props.managers.map(manager => 
+                {managers.length > 0 && managers.map(manager => 
                 <div className="manager-info" key={manager._id}>
                     <h3>{manager.name}</h3>
                     <p>Email: {manager.email}</p>
-                    <p>School: {manager.school.schoolName}</p>
+                    <p>School: {manager.school.name}</p>
                     <button onClick={(e) => deleteManager(e, manager._id)}>Delete manager</button>
                     <br/>
                     <br/>
