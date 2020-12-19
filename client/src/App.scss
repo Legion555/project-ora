@@ -47,12 +47,15 @@ a {
 }
 
 //LoginForm
-.auth-container {
-  width: 400px;
-  border-radius: 25px;
-  padding: 15px;
+.auth-wrapper {
+  width: 480px; height: 100vh;
+  display: flex; align-items: center;
   background: $color-light;
   box-shadow: $shadow-main;
+}
+.auth-container {
+  width: 100%; 
+  padding: 15px;
   .login-container, .register-container {
     width: 100%;
     h1 {
@@ -60,25 +63,14 @@ a {
       margin-bottom: 20px;
       text-align: center;
     }
-    input {
-      width: 100%; height: 25px;
-      margin: 15px 0;
-      display: block;
-      background: none;
-      border: none;
-      border-bottom: 1px solid black;
-      font-size: 18px;
-    }
     .error {
       background: lighten($color: red, $amount: 40);
       border-bottom: 1px solid red;
     }
     button {
+      margin-top: 15px;
       background: $color-accent-one;
-      padding: 5px;
-      border: none;
       color: $color-dark;
-      font-size: 18px;
       &:hover {
         background: $color-dark;
         color: $color-accent-one;
@@ -101,27 +93,50 @@ a {
   width: 100%; height: 100vh;
   display: flex;
   .navigation-container {
-    width: 75px; height: 100%;
+    width: 100px; height: 100%;
     display: flex; flex-direction: column; justify-content: space-between;
     background: $color-dark;
     text-align: center;
     .links {
       p {
-        width: 100%;
-        padding: 10px 0;
-        display: block;
         font-size: 12px;
-        color: $color-accent-one;
-        &:hover {
-          border-left: 5px solid $color-accent-one;
-          cursor: pointer;
-        }
-        .icon {
-          font-size: 32px;
-        }
+          color: $color-accent-one;
       }
-      .link-active {
-        border-left: 5px solid $color-accent-one;
+      .nav-item {
+        .main-link {
+          width: 100%;
+          padding: 10px 0;
+          display: block;
+          transition: 0.25s linear;
+          &:hover {
+            border-left: 5px solid $color-accent-one;
+            cursor: pointer;
+          }
+          .icon {
+            font-size: 32px;
+          }
+        }
+        .main-link__active {
+          border-left: 5px solid $color-accent-one;
+        }
+        .sub-link__container {
+          height: auto;
+          text-align: left;
+          font-size: 10px;
+          transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+          p {
+            padding: 3px 0 3px 10px;
+            transition: 1s cubic-bezier(0.075, 0.75, 0.15, 1);
+            &:hover {
+              padding-left: 2px;
+              cursor: pointer;
+            }
+          }
+        }
+        .hidden {
+          height: 0;
+          overflow: hidden;
+        }
       }
     }
     .logout{
@@ -138,7 +153,7 @@ a {
   }
   //Views fall under this class
   .content-container {
-    width: calc(100% - 75px); height: 100%;
+    width: calc(100% - 100px); height: 100%;
   }
 }
 //Dashboard view
@@ -172,230 +187,270 @@ a {
     }
   }
 }
-//Schools view
-.schools-container {
+//Section view
+.section__container {
   width: 100%;
   .section-nav {
-    width: 100%; height: 40px;
-    display: flex; justify-content: space-between;
-    background: $color-accent-two;
-    .breadcrumb {
-      p {
-        margin-left: 10px;
-        line-height: 40px;
-        font-size: 18px;
-        color: $color-light;
-      }
-    }
-    .functions {
-      button {
-        height: 100%;
-        padding: 0 10px;
-        border: none;
-        font-size: 18px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-      .button-create-school {
-        color: $color-light;
-        background: green;
-        &:hover {
-          color: green;
-          background: $color-light;
-        }
-      }
-      .button-assign-manager {
-        color: $color-light;
-        background: darken($color: orange, $amount: 10);
-        &:hover {
-          color: darken($color: orange, $amount: 10);
-          background: $color-light;
-        }
-      }
-    }
-    
+    width: 100%;
+    padding: 25px;
   }
-  .functions-container {
-    width: auto; height: auto;
+  .content-container {
     margin: 15px;
     padding: 10px;
+    border: 1px solid $color-dark;
     border-radius: 5px;
-    background: darken($color: white, $amount: 10);
   }
-  .schools-info {
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+}
+//Schools view
+.schools-container {
+  .content-container {
+    .create-school__form {
+      width: 100%;
+      .input {
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  }
+  h3 {
+    font-size: 32px;
+  }
+  p {
+    font-size: 18px;
   }
 }
 //Managers view
 .managers-container {
-  width: 100%;
-  .section-nav {
-    width: 100%; height: 40px;
-    display: flex; justify-content: space-between;
-    background: $color-accent-two;
-    .breadcrumb {
-      p {
-        margin-left: 10px;
-        line-height: 40px;
-        font-size: 18px;
-        color: $color-light;
+  .view-managers__container {
+    display: flex; justify-content: space-evenly;
+    padding: 50px 25px;
+    .manager__card {
+      width: 250px;
+      padding: 25px;
+      border: none;
+      border-radius: 25px;
+      box-shadow: $shadow-main;
+      img {
+        display: block;
+        margin: auto;
+      }
+      h1 {
+        font-size: 24px;
+        text-align: center;
       }
     }
-    .functions {
-      button {
-        height: 100%;
-        padding: 0 10px;
-        border: none;
-        font-size: 18px;
-        &:hover {
-          cursor: pointer;
-        }
+  }
+  .content-container {
+    .create-manager {
+      width: 100%;
+      .input {
+        width: 100%;
+        margin: 10px 0;
       }
-      .button-create-manager {
-        color: $color-light;
-        background: green;
-        &:hover {
-          color: green;
-          background: $color-light;
+    }
+    .assign-manager {
+      .assignment__container {
+        height: 400px;
+        display: flex; justify-content: space-evenly; align-items: center;
+        select {
+          color: $color-accent-two;
+          border: 2px none;
+          border-radius: 12px;
+          font-size: 24px;
+          padding: 25px;
+          box-shadow: 0px 5px 8px -3px rgba(0,0,0,0.14);
+          &:focus {
+            border-radius: 12px;
+            border-color: purple;
+          }
+        }
+        .icon {
+          font-size: 40px;
         }
       }
     }
   }
-  .functions-container {
-    width: auto; height: auto;
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  h3 {
+    font-size: 32px;
   }
-  .managers-info {
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  p {
+    font-size: 18px;
   }
 }
 //Teachers view
 .teachers-container {
-  width: 100%;
-  .section-nav {
-    width: 100%; height: 40px;
-    display: flex; justify-content: space-between;
-    background: $color-accent-two;
-    .breadcrumb {
-      p {
-        margin-left: 10px;
-        line-height: 40px;
-        font-size: 18px;
-        color: $color-light;
+  .view-teachers__container {
+    display: flex; justify-content: space-evenly;
+    padding: 50px 25px;
+    .teacher__card {
+      width: 250px;
+      padding: 25px;
+      border: none;
+      border-radius: 25px;
+      box-shadow: $shadow-main;
+      img {
+        display: block;
+        margin: auto;
+      }
+      h1 {
+        font-size: 24px;
+        text-align: center;
       }
     }
-    .functions {
-      button {
-        height: 100%;
-        padding: 0 10px;
-        border: none;
-        font-size: 18px;
-        &:hover {
-          cursor: pointer;
-        }
+  }
+  .content-container {
+    .create-teacher {
+      width: 100%;
+      .input {
+        width: 100%;
+        margin: 10px 0;
       }
-      .button-create-teacher {
-        color: $color-light;
-        background: green;
-        &:hover {
-          color: green;
-          background: $color-light;
+    }
+    .assign-teacher {
+      .assignment__container {
+        height: 400px;
+        display: flex; justify-content: space-evenly; align-items: center;
+        select {
+          color: $color-accent-two;
+          border: 2px none;
+          border-radius: 12px;
+          font-size: 24px;
+          padding: 25px;
+          box-shadow: 0px 5px 8px -3px rgba(0,0,0,0.14);
+          &:focus {
+            border-radius: 12px;
+            border-color: purple;
+          }
+        }
+        .icon {
+          font-size: 40px;
         }
       }
     }
   }
-  .functions-container {
-    width: auto; height: auto;
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  h3 {
+    font-size: 32px;
   }
-  .teachers-info {
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  p {
+    font-size: 18px;
   }
 }
 //Classes view
 .classes-container {
-  width: 100%;
-  .section-nav {
-    width: 100%; height: 40px;
-    display: flex; justify-content: space-between;
-    background: $color-accent-two;
-    .breadcrumb {
-      p {
-        margin-left: 10px;
-        line-height: 40px;
-        font-size: 18px;
-        color: $color-light;
+  .view-classes__container {
+    display: flex; justify-content: space-evenly;
+    padding: 50px 25px;
+    .class__card {
+      width: 250px;
+      padding: 25px;
+      border: none;
+      border-radius: 25px;
+      box-shadow: $shadow-main;
+      img {
+        display: block;
+        margin: auto;
+      }
+      h1 {
+        font-size: 24px;
+        text-align: center;
       }
     }
-    .functions {
-      button {
-        height: 100%;
-        padding: 0 10px;
-        border: none;
-        font-size: 18px;
-        &:hover {
-          cursor: pointer;
-        }
+  }
+  .content-container {
+    .create-class {
+      width: 100%;
+      .input {
+        width: 100%;
+        margin: 10px 0;
       }
-      .button-create-class {
-        color: $color-light;
-        background: green;
-        &:hover {
-          color: green;
-          background: $color-light;
+    }
+    .assign-teacher {
+      .assignment__container {
+        height: 400px;
+        display: flex; justify-content: space-evenly; align-items: center;
+        select {
+          color: $color-accent-two;
+          border: 2px none;
+          border-radius: 12px;
+          font-size: 24px;
+          padding: 25px;
+          box-shadow: 0px 5px 8px -3px rgba(0,0,0,0.14);
+          &:focus {
+            border-radius: 12px;
+            border-color: purple;
+          }
+        }
+        .icon {
+          font-size: 40px;
         }
       }
     }
   }
-  .functions-container {
-    width: auto; height: auto;
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  h3 {
+    font-size: 32px;
   }
-  .classes-info {
-    margin: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background: darken($color: white, $amount: 10);
+  p {
+    font-size: 18px;
   }
 }
-//Class view
-.class-container {
-  .class-details-container {
-    text-align: center;
-  }
-  .add-student-container {
-    text-align: center;
-  }
-  .students-container {
-    width: 100%;
-    display: flex; justify-content: space-evenly; flex-wrap: wrap;
-    padding: 10px;
-    .student-card {
-      width: 200px;
-      margin: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      background: $color-light;
+//TeacherStudents view
+.students-container {
+  .view-students__container {
+    display: flex; justify-content: space-evenly;
+    padding: 50px 25px;
+    .student__card {
+      width: 250px;
+      padding: 25px;
+      border: none;
+      border-radius: 25px;
       box-shadow: $shadow-main;
+      img {
+        display: block;
+        margin: auto;
+      }
+      h1 {
+        font-size: 24px;
+        text-align: center;
+      }
     }
+  }
+  .content-container {
+    .create-student {
+      width: 100%;
+      .input {
+        width: 100%;
+        margin: 10px 0;
+      }
+      select {
+        border: 2px none;
+        border-radius: 12px;
+        font-size: 18px;
+        padding: 25px;
+        box-shadow: 0px 5px 8px -3px rgba(0,0,0,0.14);
+      }
+    }
+    .assign-student {
+      .assignment__container {
+        height: 400px;
+        display: flex; justify-content: space-evenly; align-items: center;
+        select {
+          color: $color-accent-two;
+          border: 2px none;
+          border-radius: 12px;
+          font-size: 24px;
+          padding: 25px;
+          box-shadow: 0px 5px 8px -3px rgba(0,0,0,0.14);
+        }
+        .icon {
+          font-size: 40px;
+        }
+      }
+    }
+  }
+  h3 {
+    font-size: 32px;
+  }
+  p {
+    font-size: 18px;
   }
 }
