@@ -90,7 +90,7 @@ const Dashboard = (props) => {
                             </div>
                         </div>
                     }
-                    {userData.authority === 'teacher' &&
+                    {/* {userData.authority === 'teacher' &&
                         <div>
                             <div className="nav-item">
                                 <p className={view === 'default' ? 'main-link main-link__active' : 'main-link'} onClick={() => setView('default')} ><RiDashboardFill className="icon" /><br/>Dashboard</p>
@@ -110,7 +110,7 @@ const Dashboard = (props) => {
                                 </div>
                             </div>
                         </div>
-                    }
+                    } */}
                 </div>
                 <div className="logout">
                     <p onClick={logout}><FaPowerOff /></p>
@@ -150,7 +150,7 @@ const Dashboard = (props) => {
                         </div>
                     </div>
                     }
-                    {userData.authority === 'teacher' &&
+                    {/* {userData.authority === 'teacher' &&
                     <div className="dashboard-container">
                         <div className="section-card">
                             <h1>Classes</h1>
@@ -158,7 +158,7 @@ const Dashboard = (props) => {
                             <button onClick={() => setView('teacher-classes')}>View details</button>
                         </div>
                     </div>
-                    }
+                    } */}
                 </div>
                 }
                 
@@ -176,12 +176,12 @@ const Dashboard = (props) => {
                 {view === 'manager-classes' && 
                     <ManagerClasses setView={setView} subView={subView} setSubView={setSubView} userData={userData} />
                 }
-                {view === 'teacher-classes' && 
+                {/* {view === 'teacher-classes' && 
                     <TeacherClasses setView={setView} subView={subView} setSubView={setSubView} userData={userData} />
                 }
                 {view === 'teacher-students' && 
                     <TeacherStudents setView={setView} subView={subView} setSubView={setSubView} userData={userData} />
-                }
+                } */}
             </div>
         </div>
     )

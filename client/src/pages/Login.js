@@ -153,26 +153,26 @@ const LoginForm = (props) => {
             })
         })
     }
-    const loginTeacher = (e) => {
-        e.preventDefault();
-        const details = {
-            email: 'testteacher1@gmail.com',
-            password: 'testteacher1123'
-        }
-        axios.post('/api/users/login', details)
-        .then(res => {
-            axios.get('/api/users', {
-                params: {
-                    email: 'testteacher1@gmail.com'
-                }
-            })
-            .then(res => {
-                const newUserData = res.data;
-                setUserData(newUserData);
-                props.setView('teacher');
-            })
-        })
-    }
+    // const loginTeacher = (e) => {
+    //     e.preventDefault();
+    //     const details = {
+    //         email: 'testteacher1@gmail.com',
+    //         password: 'testteacher1123'
+    //     }
+    //     axios.post('/api/users/login', details)
+    //     .then(res => {
+    //         axios.get('/api/users', {
+    //             params: {
+    //                 email: 'testteacher1@gmail.com'
+    //             }
+    //         })
+    //         .then(res => {
+    //             const newUserData = res.data;
+    //             setUserData(newUserData);
+    //             props.setView('teacher');
+    //         })
+    //     })
+    // }
 
     //Register new user
     // const register = (e) => {
@@ -234,11 +234,11 @@ const LoginForm = (props) => {
                         Login as manager
                     </Button>
                 </div><br/>
-                <div>
+                {/* <div>
                     <Button fullWidth variant="contained" color="primary" onClick={loginTeacher}>
                         Login as teacher
                     </Button>
-                </div>
+                </div> */}
                 <br/><br/>
                 {/* {view === 'login' &&
                 <div className="login-container">

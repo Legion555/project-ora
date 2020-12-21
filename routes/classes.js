@@ -48,8 +48,7 @@ router.put('/addTeacher', async (req,res) => {
     } else {
       res.send(result);
     }
-  }
-);
+  });
 })
 
 //delete class
@@ -73,7 +72,6 @@ router.delete('/deleteClass/:id', (req, res) => {
 //req: TEACHER privilege
 //read teacher classes
 router.get('/readTeacherClasses', (req, res) => {
-  console.log(req.query)
   Class.find({ "teacher.id": req.query.teacherId },
     function(err, result) {
       if (err) {
@@ -83,6 +81,57 @@ router.get('/readTeacherClasses', (req, res) => {
       }
     }
   )
+})
+//create student & add to class
+router.put('/createStudent', (req,res) => {
+  const newStudent = {
+    id: req.body.studentId,
+    name: req.body.studentName,
+    email: req.body.studentEmail,
+    age: req.body.studentAge,
+    classId: req.body.classId
+  }
+  Class.update(
+    { "_id": req.body.classId },
+    { $push: { students: newStudent } },
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})
+//transfer student to class
+router.put('/transferStudent', (req,res) => {
+  Class.update(
+    { "_id": req.body.classId },
+    { $push: { students:
+      { newStudent } } },
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})
+//delete student
+router.put('/deleteStudent', (req,res) => {
+  Class.update(
+    { "_id": req.body.classId },
+    { $pull: { students: {id: req.body.studentId}}}, 
+        {multi: true},
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
 })
 
 module.exports = router;

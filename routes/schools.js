@@ -93,10 +93,10 @@ router.put('/removeClass', async (req,res) => {
 
 //assign teacher to school
 router.put('/addTeacher', async (req,res) => {
-    School.update(
-      { "_id": req.body.schoolId },
-      { $push: { teachers:
-        { name: req.body.teacherName, id: req.body.teacherId } } },
+  School.update(
+    { "_id": req.body.schoolId },
+    { $push: { teachers:
+      { name: req.body.teacherName, id: req.body.teacherId } } },
     function(err, result) {
       if (err) {
         res.send(err);
